@@ -34,3 +34,9 @@ class ApplicationSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
         read_only_fields = ["id", "created_at", "updated_at"]
+
+
+class StatusHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StatusHistory
+        fields = ["id", "old_status", "new_status", "changed_at"]
