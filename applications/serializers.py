@@ -40,3 +40,9 @@ class StatusHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = StatusHistory
         fields = ["id", "old_status", "new_status", "changed_at"]
+
+
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
+        fields = ["id", "name", "email", "role"]

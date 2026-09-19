@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from .models import Application, StatusHistory
 from .serializers import (
     ApplicationSerializer,
+    ContactSerializer,
     RegisterSerializer,
     StatusHistorySerializer,
 )
@@ -51,4 +52,16 @@ class ApplicationViewSet(viewsets.ModelViewSet):
         application = self.get_object()
         history = application.status_history.all()
         serializer = StatusHistorySerializer(history, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=["get", "post"])
+    def contacts(self, request, pk=None):
+        application = self.get_object()
+        if request.method == "POST":
+            serializer = ContactSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save(application=application)
+            return Response(serializer.data, status=201)
+        contacts = application.contacts.all()
+        serializer = ContactSerializer(contacts, many=True)
         return Response(serializer.data)
