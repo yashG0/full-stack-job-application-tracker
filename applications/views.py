@@ -23,6 +23,7 @@ class IsOwner(permissions.BasePermission):
 class ApplicationViewSet(viewsets.ModelViewSet):
     serializer_class = ApplicationSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwner]
+    filterset_fields = ["status"]
 
     def get_queryset(self):
         return Application.objects.filter(user=self.request.user)
