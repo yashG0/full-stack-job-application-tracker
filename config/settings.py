@@ -24,13 +24,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-5n-98t%8l4pnms-8z90=smrg^&s%wy@n8487cn272!ws#c1&ht"
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["api.yashgaurkar.me"]
 
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_HSTS_SECONDS = 31536000
 
 # Application definition
 
@@ -137,9 +141,9 @@ MAILERS = {
     },
 }
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # this is vite default port
-]
+CORS_ALLOWED_ORIGINS = ["https://jobtracker.yashgaurkar.me"]
+if DEBUG:
+    CORS_ALLOWED_ORIGINS.append("http://localhost:5173")
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -147,3 +151,5 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
 }
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
